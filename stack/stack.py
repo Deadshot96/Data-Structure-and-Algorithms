@@ -39,6 +39,27 @@ class StackWithList():
         return str(self)
 
 
+class StackWithLinkedList:
+
+    class _Node:
+        def __init__(self, val: int) -> NoReturn:
+            self.data = val
+            self.next = None
+
+    def __init__(self):
+        self._head = None
+        self._len = 0
+
+    def __len__(self):
+        return self._len
+
+    def isEmpty(self):
+        pass
+    
+
+
+
+
 if __name__ == '__main__':
     S = StackWithList()
     S.push(29)
