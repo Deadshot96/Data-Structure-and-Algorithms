@@ -872,3 +872,19 @@ class SparseArrayDir(object):
     
     def iterNode(self):
         return nodeIteratorSparseDir(self._elements)
+
+class nodeIteratorSparseDir(object):
+    
+    def __init__(self, SparseDict = _od()):
+        self._SparseDict = SparseDict
+        self._list = self._SparseDict.keys()
+        self._ndx = 0
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        value = self._SparseDict[self._ndx]
+        index = self._ndx
+        self._ndx += 1
+        return index, value
