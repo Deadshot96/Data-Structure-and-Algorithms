@@ -32,4 +32,23 @@ class StackWithList():
             raise Empty('Empty Stack')
         return self._stack[-1]
 
+    def __str__(self) -> str:
+        return " ".join(list(map(str, self._stack)))
 
+    def __repr__(self) -> str:
+        return str(self)
+
+
+if __name__ == '__main__':
+    S = StackWithList()
+    S.push(29)
+    S.push(20)
+    print(S.peek())
+    print(len(S))
+    print(S.pop())
+    print(len(S))
+    print(S.is_empty())
+    print(S.peek())
+    for i in range(20):
+        S.push(i)
+    print(S)
