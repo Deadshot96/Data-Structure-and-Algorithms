@@ -5,7 +5,7 @@ class Empty(Exception):
     # attempting to access the component from empty stack
     pass
 
- class StackWithList():
+class StackWithList():
 
     def __init__(self):
         self._stack = list()
