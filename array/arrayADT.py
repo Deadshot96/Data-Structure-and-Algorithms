@@ -579,3 +579,11 @@ class _ArrayIterator:
             return entry
         else:
             raise StopIteration
+
+
+class _SparseArrayNode(object):
+    
+    def __init__(self, index = 0, value = 0):
+        self.index = index
+        self.value = value
+        self.next = None
