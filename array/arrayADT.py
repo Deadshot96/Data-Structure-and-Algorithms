@@ -589,6 +589,23 @@ class _SparseArrayNode(object):
         self.next = None
 
 
+class _nodeSparseArrayIterator(object):
+    
+    def __init__(self, theElements = None):
+        self._theElements = theElements
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self._theElements is not None:
+            node = self._theElements
+            self._theElements = self._theElements.next
+            return node
+        else:
+            raise StopIteration
+
+
 class SparseArray(object):
     
     def __init__(self, size):
