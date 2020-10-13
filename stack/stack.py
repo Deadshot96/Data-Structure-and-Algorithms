@@ -107,3 +107,9 @@ if __name__ == '__main__':
     for i in range(20):
         S.push(i)
     print(S)
+
+    S = StackWithLinkedList()
+    for i in "ThisWillBeInStack"[::-1]:
+        S.push(i)
+
+    print(S)
