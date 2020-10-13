@@ -77,6 +77,19 @@ class StackWithLinkedList:
 
         return self._head.data
 
+    def __str__(self) -> str:
+        s = ""
+        temp = self._head
+
+        while temp is not None:
+            s += (str(temp.data) + " ")
+            temp = temp.next
+
+        return s[:-1]
+
+    def __repr__(self) -> str:
+        return str(self)
+
     
 
 
