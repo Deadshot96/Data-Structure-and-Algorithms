@@ -14,7 +14,7 @@ class StackWithList():
     def __len__(self) -> int:
         return self._len
 
-    def is_empty(self) -> bool:
+    def isEmpty(self) -> bool:
         return self._len == 0
 
     def push(self, n: int) -> NoReturn:
@@ -22,13 +22,13 @@ class StackWithList():
         self._len += 1
 
     def pop(self) -> int:
-        if self.is_empty():
+        if self.isEmpty():
             raise Empty('Empty Stack')
         self._len -= 1
         return self._stack.pop()
 
     def peek(self) -> int:
-        if self.is_empty():
+        if self.isEmpty():
             raise Empty('Empty Stack')
         return self._stack[-1]
 
@@ -55,7 +55,7 @@ class StackWithLinkedList:
 
     def isEmpty(self):
         pass
-    
+
 
 
 
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     print(len(S))
     print(S.pop())
     print(len(S))
-    print(S.is_empty())
+    print(S.isEmpty())
     print(S.peek())
     for i in range(20):
         S.push(i)
