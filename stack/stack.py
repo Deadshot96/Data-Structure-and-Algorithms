@@ -61,13 +61,21 @@ class StackWithLinkedList:
         node.next = self._head
         self._head = node
         self._len += 1
-        
+
 
     def pop(self) -> int:
-        pass
+        if self.isEmpty():
+            raise Empty("Empty Stack")
+        val = self._head.data
+        self._head = self._head.next
+        self._len -= 1
+        return val
 
     def peek(self) -> int:
-        pass
+        if self.isEmpty():
+            raise Empty("Empty Stack")
+
+        return self._head.data
 
     
 
