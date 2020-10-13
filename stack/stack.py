@@ -57,7 +57,11 @@ class StackWithLinkedList:
         return self._head is None
 
     def push(self, val: int) -> NoReturn:
-        pass
+        node = self._Node(val)
+        node.next = self._head
+        self._head = node
+        self._len += 1
+        
 
     def pop(self) -> int:
         pass
