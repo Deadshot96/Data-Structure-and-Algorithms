@@ -14,8 +14,14 @@ def checkParenthesis(s: int) -> bool:
             j = parenthesisStack.pop()
             if left.index(j) != right.index(i):
                 return False
+
+    if not parenthesisStack.isEmpty():
+        return False
     return True
 
 
 if __name__ == "__main__":
-    pass
+    statement = "((name))(something)()(({{}}))[][][]{{}}(([]))"
+    print(checkParenthesis(statement))
+    statement = "{main}[()])"
+    print(checkParenthesis(statement))
