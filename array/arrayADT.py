@@ -563,3 +563,19 @@ class MultiArray:
     def _computeFactors(self):
         for i in range(1, len(self._factors)):
             self._factors[len(self._factors) -i - 1] = self._factors[len(self._factors)-i] * self._dims[len(self._factors)-i]
+
+class _ArrayIterator:
+    def __init__(self, theArray):
+        self._arrayRef = theArray
+        self._curNdx = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self._curNdx < len(self._arrayRef):
+            entry = self._arrayRef[self._curNdx]
+            self._curNdx += 1
+            return entry
+        else:
+            raise StopIteration
