@@ -18,13 +18,18 @@ class Empty(Exception):
         return self._len == 0
 
     def push(self, n: int) -> NoReturn:
-        pass
+        self._stack.append(n)
+        self._len += 1
 
     def pop(self) -> int:
-        pass
+        if self.is_empty():
+            raise Empty('Empty Stack')
+        self._len -= 1
+        return self._stack.pop()
 
     def peek(self) -> int:
-        pass
-
+        if self.is_empty():
+            raise Empty('Empty Stack')
+        return self._stack[-1]
 
 
