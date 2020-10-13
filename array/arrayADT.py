@@ -507,3 +507,59 @@ class Array2D:
                 for j in range(self.numCols()):
                     total[i, j] = self[i, j] + val[i, j]
             return total
+
+
+class MultiArray:
+        
+    def __init__(self, *dimensions):
+        assert len(dimensions) > 1, "The array must have 2 or more dimensions."
+
+        self._dims = dimensions
+        size = 1
+        for dim in dimensions:
+            assert dim > 0, "Dimensions must be > 0."
+            size *= dim
+        self._elements = Array(size)
+        self._factors = Array(len(dimensions))
+        self._factors.clear(1)
+        self._computeFactors()
+
+    def numDims(self):
+        return len(self._dims)
+
+    def length(self, dim):
+        assert dim > 0 and dim < len(self._dims), "Dimension component out of range."
+        return self._dims[dim - 1]
+
+    def clear(self, value):
+        self._elements.clear(value)
+    
+    def shape(self):
+        dims = _cp(self._dims)
+        return dims
+
+    def __getitem__(self, ndxTuple):
+        assert len(ndxTuple) == self.numDims(), "Invalid # of array subscripts."
+        index = self._computeIndex(ndxTuple)
+        assert index is not None, "Array subscript out of range."
+        return self._elements[index]
+
+    def __setitem__(self, ndxTuple, value):
+        assert len(ndxTuple) == self.numDims(), "Invalid # of array subscripts."
+
+        index = self._computeIndex(ndxTuple)
+        assert index is not None, "Array subscript out of range."
+        self._elements[index] = value
+
+    def _computeIndex(self, idx):
+        offset = 0
+        for i, j in enumerate(idx):
+            if j < 0 and j > self._dims[i]:
+                return None
+            else:
+                offset += self._factors[i] * j
+        return offset
+
+    def _computeFactors(self):
+        for i in range(1, len(self._factors)):
+            self._factors[len(self._factors) -i - 1] = self._factors[len(self._factors)-i] * self._dims[len(self._factors)-i]
