@@ -388,3 +388,122 @@ class Array:
         else:
             raise TypeError('Operation between invalid types.')
         
+class Array2D:
+    def __init__(self, numRows, numCols):
+        self._theRows = Array(numRows)
+        self._curNdx = 0
+        for i in range(numRows):
+            self._theRows[i] = Array(numCols)
+
+    def numRows(self):
+        return len(self._theRows)
+
+    def numCols(self):
+        return len(self._theRows[0])
+    
+    def shape(self):
+        return self.numRows(), self.numCols()
+    
+    def size(self):
+        return self.numRows() * self.numCols()
+
+    def clear(self, value):
+        for row in self._theRows:
+            row.clear(value)
+
+    def __getitem__(self, ndxTuple):
+        assert len(ndxTuple) == 2, "Invalid number of array subscripts."
+        
+        row = ndxTuple[0]
+        col = ndxTuple[1]
+
+        assert row >= 0 and row < self.numRows() and col >= 0 and col < self.numCols(), "Array subscript out of range."
+        the1dArray = self._theRows[row]
+        return the1dArray[col]
+
+    def __setitem__(self, ndxTuple, value):
+        assert len(ndxTuple) == 2, "Invalid number of array subscripts."
+        
+        row = ndxTuple[0]
+        col = ndxTuple[1]
+
+        assert row >= 0 and row < self.numRows() and col >= 0 and col < self.numCols(), "Array subscript out of range."
+        the1dArray = self._theRows[row]
+        the1dArray[col] = value
+
+    def __str__(self):
+        S = str()
+        for row in self._theRows:
+            S += (str(row) + "\n")
+        return S
+
+    def __repr__(self):
+        return str(self)
+    
+
+    def returnRow(self, row):
+        assert row in range(0, self.numRows()), "Invalid Row"
+        return self._theRows [ row ]
+    
+    def returnCol(self, col):
+        assert col in range(0, self.numCols()), "Invalid Column"
+        newArray = Array(self.numRows())
+        for i in range(self.numRows()):
+            row = self._theRows[i]
+            newArray[i] = row [col]
+        return newArray
+    
+    def __iter__(self):
+        self._curNdx = 0
+        return self
+    
+    def __next__(self):
+        row = self._curNdx // self.numCols()
+        col = self._curNdx % self.numCols()
+        
+        if self._curNdx < (self.numCols() * self.numRows()):
+            self._curNdx += 1
+            iterRow = self._theRows[row]
+            return iterRow[col]
+        else:
+            raise StopIteration
+        
+    def copy(self):
+        copyArray = Array2D(self.numRows(), self.numCols())
+        for i in range(self.numRows()):
+            for j in range(self.numCols()):
+                copyArray[i, j] = self[i, j]
+        return copyArray
+    
+    def count(self, target):
+        count = 0
+        for i in range(self.numRows()):
+            X = self._theRows[i]
+            count += X.count(target)
+        
+        return count
+    
+    def index(self, value):
+        for xNum, row in enumerate(self._theRows):
+            for yNum, val in enumerate(row):
+                if val == value:
+                    return xNum, yNum
+        
+        return None, None
+    
+    def __len__(self):
+        return self.numRows()
+    
+    def __add__(self, val):
+        if isinstance(val, (int, float)):
+            total = Array2D(self.numRows(), self.numCols())
+            for i in range(self.numRows()):
+                for j in range(self.numCols()):
+                    total[i, j] = self[i, j] + val
+            return total
+        elif isinstance(val, Array2D) and self.shape() == val.shape():
+            total = Array2D(self.numRows(), self.numCols())
+            for i in range(self.numRows()):
+                for j in range(self.numCols()):
+                    total[i, j] = self[i, j] + val[i, j]
+            return total
