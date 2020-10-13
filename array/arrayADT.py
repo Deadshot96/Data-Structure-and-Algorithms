@@ -587,3 +587,195 @@ class _SparseArrayNode(object):
         self.index = index
         self.value = value
         self.next = None
+
+
+class SparseArray(object):
+    
+    def __init__(self, size):
+        assert isinstance(size, int), 'The size of array must be an integer.'
+        assert size > 0, 'The size must be greater than 0.'
+        
+        self._lenght = size
+        self._size = 0
+        self._elements = None
+        self._clear = 0
+        self._ndx = None
+        self._nodeFlag = False
+        self._iterndx = 0
+    
+    def printNodes(self):
+        if self._elements is None:
+            print("Null Array.")
+            return False
+        
+        curNode = self._elements
+        nodeDir = dict()
+        
+        while curNode is not None:
+            nodeDir[curNode.index] = curNode.value
+            curNode = curNode.next
+        
+        print(nodeDir)
+        return True
+    
+    
+    def __len__(self):
+        return self._lenght
+    
+    def __setitem__(self, index, value):
+        assert index in range(0, len(self)), "Array subscript out of range."
+        
+        if value == self._clear:
+            if self._isNodePresent(index, True):
+                return False
+            return False
+                
+        curNode = self._elements
+        preNode = None
+        
+        while curNode is not None and curNode.index < index:
+            preNode = curNode
+            curNode = curNode.next
+            
+        if curNode is not None:
+            if curNode.index == index:
+                curNode.value = value
+                return False
+            elif preNode is None:
+                newNode = _SparseArrayNode(index, value)
+                newNode.next = curNode
+                self._elements = newNode
+            else:
+                newNode = _SparseArrayNode(index, value)
+                preNode.next = newNode
+                newNode.next = curNode
+        else:
+            newNode = _SparseArrayNode(index, value)
+            if preNode is not None:
+                preNode.next = newNode
+            else:
+                self._elements = newNode
+                
+        self._size += 1
+        return True
+    
+    def _isNodePresent(self, index, toDelete = False):
+        curNode = self._elements
+        preNode = None
+        while curNode is not None and curNode.index != index:
+            preNode = curNode
+            curNode = curNode.next
+           
+        if curNode is not None:
+            if toDelete:
+                if preNode is None:
+                    self._elements = curNode.next
+                    del curNode
+                else:
+                    preNode.next = curNode.next
+                    del curNode
+                
+                return True
+            else:
+                return True
+            
+        return False
+
+    def __getitem__(self, index):        
+        assert index in range(0, len(self)), "Array subscript out of range."
+        curNode = self._elements
+        
+        while curNode is not None and curNode.index < index:
+            curNode = curNode.next
+            
+        if curNode is not None:
+            if curNode.index == index:
+                return curNode.value
+        return self._clear
+    
+    def __iter__(self):
+        self._ndx = self._elements
+        self._iterndx = 0
+        return self
+    
+    def iterNode(self):
+        return _nodeSparseArrayIterator(self._elements)
+    
+    
+    def __next__(self):
+        if self._iterndx < len(self):                    
+            if self._ndx is not None and self._ndx.index == self._iterndx:
+                value = self._ndx.value
+                self._ndx = self._ndx.next
+            else:
+                value = self._clear
+            
+            self._iterndx += 1
+            return value
+        else:
+            raise StopIteration      
+        
+    def clear(self, value):
+        curNode = self._elements
+        while curNode is not None:
+            node = curNode
+            curNode = curNode.next
+            del node
+        self._elements = None
+        self._clear = value
+        
+    def __contains__(self, target):
+        if self._size == 0 and self._clear != target:
+            return False
+        if self._size < len(self) and self._clear == target:
+            return True
+        for i in self:
+            if i == target:
+                return True
+        else:
+            return False
+        
+    def count(self, target):
+        count = 0
+        if not target in self:
+            return count
+        else:
+            for i in self:
+                if i == target:
+                    count += 1
+        
+        if target == self._clear:
+            count += (len(self) - self._size)
+            
+        return count
+    
+    
+    
+    def __str__(self):
+        S = '['
+        curNode = self._elements
+        index = 0
+        
+        for i in range(len(self)):
+            if curNode is not None and i == curNode.index:
+                S += (str(curNode.value) + ', ')
+                curNode = curNode.next
+            else:
+                S += (str(self._clear) + ', ')
+                
+        S = S[:-2]
+        S += ']'
+        return S
+    
+    def __repr__(self):
+        return str(self)
+    
+    def copy(self):
+        X = SparseArray(len(self))
+        X.clear(self._clear)
+        
+        curNode = self._elements
+        while curNode is not None:
+            X [curNode.index] = curNode.value
+        
+        return X
