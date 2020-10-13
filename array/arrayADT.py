@@ -796,3 +796,79 @@ class SparseArray(object):
             X [curNode.index] = curNode.value
         
         return X
+
+
+class SparseArrayDir(object):
+    
+    def __init__(self, size):
+        self._length = size
+        self._size = 0
+        self._elements = _od()
+        self._clear = 0
+        self._ndx = 0
+        
+    def __len__(self):
+        return self._length
+    
+    def size(self):
+        return self._size
+    
+    def __setitem__(self, index, value):
+        assert isinstance(index, int) and index in range(0, len(self)), "Invalid index for an array subscript."
+        if value != self._clear:
+            self._elements[index] = value
+            self._size += 1
+        else:
+            if index in self._elements:
+                self._elements.pop(index)
+                self._size -= 1
+                
+                
+    def __getitem__(self, index):
+        assert isinstance(index, int) and index in range(0, len(self)), "Invalid index for an array subscript."
+        if index in self._elements:
+            return self._elements[index]
+        else:
+            return self._clear
+        
+    def __contains__(self, target):
+        return target in self._elements.values()
+    
+    def clear(self, value):
+        self.clear = value
+        self._elements.clear()
+        
+    def count(self, target):
+        L = list(self._elements.values())
+        count = L.count(target)
+        
+        if target == self._clear:
+            return (count + len(self) - self.size())
+        else:
+            return count
+    
+    def __str__(self):
+        S = '['
+        
+        for i in range(len(self)):
+            S += (str(self.__getitem__(i)) + ', ')
+                
+        S = S[:-2]
+        S += ']'
+        return S
+    
+    def __repr__(self):
+        return str(self)
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self._ndx < len(self):
+            self._ndx += 1
+            return self.__getitem__(self._ndx)
+        else:
+            raise StopIteration
+    
+    def iterNode(self):
+        return nodeIteratorSparseDir(self._elements)
