@@ -50,11 +50,22 @@ class StackWithLinkedList:
         self._head = None
         self._len = 0
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self._len
 
-    def isEmpty(self):
+    def isEmpty(self) -> bool:
+        return self._head is None
+
+    def push(self, val: int) -> NoReturn:
         pass
+
+    def pop(self) -> int:
+        pass
+
+    def peek(self) -> int:
+        pass
+
+    
 
 
 
