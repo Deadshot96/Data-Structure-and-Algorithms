@@ -1,7 +1,6 @@
 from typing import List, NoReturn
 
 class QueueWithList:
-
     MAXSIZE = 10
 
     def __init__(self) -> NoReturn:
