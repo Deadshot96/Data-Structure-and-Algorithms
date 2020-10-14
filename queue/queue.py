@@ -12,4 +12,13 @@ class QueueWithList:
     def __len__(self) -> int:
         return self._size
 
+    def isEmpty(self) -> bool:
+        return self._size == 0
+
+    def enqueue(self, val: int) -> NoReturn:
+        pass
+
+    def dequeue(self) -> int:
+        pass
+    
     
