@@ -6,8 +6,6 @@ class QueueWithList:
     def __init__(self) -> NoReturn:
         self._data = [None] * self.MAXSIZE
         self._size = 0
-        self._head = -1
-        self._tail = -1
 
     def __len__(self) -> int:
         return self._size
@@ -16,9 +14,17 @@ class QueueWithList:
         return self._size == 0
 
     def enqueue(self, val: int) -> NoReturn:
-        pass
+        if len(self) == self.MAXSIZE:
+            self._resize()
 
     def dequeue(self) -> int:
         pass
-    
+
+    def _resize(self):
+        self.MAXSIZE *= 2
+        temp = [None] * self.MAXSIZE
+
+        for index, value in enumerate(self._data):
+            temp [index] = value
+        self._data = temp
     
