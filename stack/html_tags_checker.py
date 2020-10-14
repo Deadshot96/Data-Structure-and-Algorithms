@@ -1,7 +1,29 @@
 from stack import StackWithList
 
 def html_tag_checker(raw: str) -> bool:
-    pass
+    S = StackWithList()
+    i = raw.find('<')
+    if i == -1:
+        return True
+
+    while i != -1:
+        j = raw.find('>', i + 1)
+        if j == -1:
+            return False
+
+        tag = raw[i + 1 : j]
+        if not tag.startswith('/'):
+            S.push(tag)
+
+        else:
+            if S.isEmpty():
+                return False
+            
+            if tag[1:] != S.pop():
+                return False
+        i = raw.find('<', j + 1)
+
+    return S.isEmpty()
 
 if __name__ == "__main__":
     raw = """
